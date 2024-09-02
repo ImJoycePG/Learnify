@@ -6,10 +6,7 @@ const connection = mysql.createConnection({
     host: dbConfig.host,
     user: dbConfig.user,
     password: dbConfig.pass,
-    database: dbConfig.bd_name,
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0
+    database: dbConfig.bd_name
 });
 
 // Conectar a la base de datos
