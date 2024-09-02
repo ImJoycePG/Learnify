@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="assets/logo.ico" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://necolas.github.io/normalize.css/8.0.1/normalize.css">
+    <link rel="stylesheet" href="./styles/StyleIndex.css">
+    <title>Learnify | Selección</title>
+</head>
+<body>
+    <div class="containerBody w-full h-screen flex items-center justify-center relative">
+        <div class="logo-container absolute top-10 w-full flex justify-center hidden xl:flex">
+            <img src="assets/logo.jpg" alt="Learnify Logo" class="logo">
+        </div>
+        <div class="card-container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="card" onclick="showLoading('matematicas')">Matemáticas</div>
+            <div class="card" onclick="showLoading('ciencia_sociales')">Ciencia Sociales</div>
+            <div class="card" onclick="showLoading('comunicacion')">Comunicación</div>
+            <div class="card" onclick="showLoading('ciencias_basicas')">Ciencias Básicas</div>
+        </div>
+        <div id="loading" class="loading-container hidden">
+            <div class="spinner"></div>
+        </div>
+    </div>
+    <script src="javascript/index.js"></script>
+</body>
+</html>
