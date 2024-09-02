@@ -1,4 +1,4 @@
-const mysql = require('mysql2');
+const mysql = require('mysql2/promise');
 const dbConfig = require('../../connection.json');
 
 // Crear la conexión a la base de datos
