@@ -15,7 +15,7 @@ const obtenerPregunta = async (req, res) => {
 
     try {
         const [results] = await pool.query(query, [`%${categoria}%`]);
-
+        console.log(results);
         if (results.length > 0) {
             const pregunta = results[0].pregunta;
             const preguntaId = results[0].pregunta_id;
