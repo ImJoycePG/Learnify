@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
     categoriaTitle.textContent = `Pregunta de ${categoria.charAt(0).toUpperCase() + categoria.slice(1)}`;
 
     // Solicitar la pregunta y respuestas a la API
-    fetch(`https://learnify-8k73.onrender.com//api/obtenerPregunta?categoria=${categoria}&userUUID=${userUUID}`)
+    fetch(`https://learnify-8k73.onrender.com/api/obtenerPregunta?categoria=${categoria}&userUUID=${userUUID}`)
         .then(response => response.json())
         .then(data => {
             console.log(data);
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
         allCards.forEach(c => c.onclick = null);
 
         setTimeout(() => {
-            fetch('https://learnify-8k73.onrender.com//api/registrarRespuesta', {
+            fetch('https://learnify-8k73.onrender.com/api/registrarRespuesta', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
