@@ -2,20 +2,14 @@ const mysql = require('mysql2');
 const dbConfig = require('../../connection.json');
 
 // Crear la conexión a la base de datos
-const connection = mysql.createConnection({
+const pool = mysql.createPool({
     host: dbConfig.host,
     user: dbConfig.user,
     password: dbConfig.pass,
-    database: dbConfig.bd_name
+    database: dbConfig.bd_name,
+    waitForConnections: true,
+    connectionLimit: 10,       // Número máximo de conexiones en el pool
+    queueLimit: 0
 });
 
-// Conectar a la base de datos
-connection.connect((err) => {
-    if (err) {
-        console.error('Error conectando a la base de datos:', err.stack);
-        return;
-    }
-    console.log('Conectado a la base de datos con id ' + connection.threadId);
-});
-
-module.exports = connection;
+module.exports = pool;

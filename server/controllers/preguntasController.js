@@ -14,31 +14,31 @@ const obtenerPregunta = async (req, res) => {
     `;
 
     try {
-        const [results] = await pool.query(query, [`%${categoria}%`]);
-        console.log(results);
+        console.log('Conectando a la base de datos...');
+        const [results] = await pool.query(query, [`%${categoria}%`]); // Usa await para manejar la promesa
+
         if (results.length > 0) {
+            console.log('Consulta ejecutada con éxito:', results);
+
             const pregunta = results[0].pregunta;
             const preguntaId = results[0].pregunta_id;
 
-            // Filtrar respuestas correctas e incorrectas
             const respuestasCorrectas = results.filter(r => r.correcta === 1).map(r => r.respuesta);
             const respuestasIncorrectas = results.filter(r => r.correcta === 0).map(r => r.respuesta);
 
-            // Seleccionar tres respuestas incorrectas al azar
             const respuestasAleatorias = respuestasIncorrectas.sort(() => 0.5 - Math.random()).slice(0, 3);
-            respuestasAleatorias.push(respuestasCorrectas[0]); // Añadir la respuesta correcta
+            respuestasAleatorias.push(respuestasCorrectas[0]);
 
-            // Mezclar las respuestas para que no siempre aparezca la correcta en la misma posición
             const respuestasFinales = respuestasAleatorias.sort(() => 0.5 - Math.random());
 
-            // Enviar la respuesta con la pregunta, respuestas y la correcta
             res.json({ 
                 pregunta, 
                 respuestas: respuestasFinales, 
                 preguntaId, 
-                correcta: respuestasCorrectas[0] // Devolver la respuesta correcta para manejarla en el frontend
+                correcta: respuestasCorrectas[0] 
             });
         } else {
+            console.log('No se encontró una pregunta para esta categoría.');
             res.json({ pregunta: 'No se encontró una pregunta para esta categoría.' });
         }
     } catch (err) {
