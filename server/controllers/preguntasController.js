@@ -1,6 +1,6 @@
-const connection = require('../config/db.js');
+const pool = require('../config/db.js');
 
-const obtenerPregunta = (req, res) => {
+const obtenerPregunta = async (req, res) => {
     const categoria = req.query.categoria;
     const userUUID = req.query.userUUID;
 
@@ -13,12 +13,8 @@ const obtenerPregunta = (req, res) => {
         ORDER BY RAND()
     `;
 
-    connection.query(query, [`%${categoria}%`], (err, results) => {
-        if (err) {
-            console.error('Error al obtener la pregunta:', err);
-            res.status(500).json({ error: 'Error al obtener la pregunta' });
-            return;
-        }
+    try {
+        const [results] = await pool.query(query, [`%${categoria}%`]);
 
         if (results.length > 0) {
             const pregunta = results[0].pregunta;
@@ -45,22 +41,24 @@ const obtenerPregunta = (req, res) => {
         } else {
             res.json({ pregunta: 'No se encontró una pregunta para esta categoría.' });
         }
-    });
+    } catch (err) {
+        console.error('Error al obtener la pregunta:', err);
+        res.status(500).json({ error: 'Error al obtener la pregunta' });
+    }
 };
 
-const registrarRespuesta = (req, res) => {
+const registrarRespuesta = async (req, res) => {
     const { userUUID, preguntaId, respuestaCorrecta } = req.body;
 
     const query = 'INSERT INTO auditoria (usuario_id, pregunta_id) VALUES (?, ?)';
-    connection.query(query, [userUUID, preguntaId], (err) => {
-        if (err) {
-            console.error('Error al registrar en auditoría:', err);
-            res.status(500).json({ error: 'Error al registrar la respuesta en auditoría' });
-            return;
-        }
 
+    try {
+        await pool.query(query, [userUUID, preguntaId]);
         res.json({ mensaje: respuestaCorrecta ? 'Respuesta correcta' : 'Respuesta incorrecta' });
-    });
+    } catch (err) {
+        console.error('Error al registrar en auditoría:', err);
+        res.status(500).json({ error: 'Error al registrar la respuesta en auditoría' });
+    }
 };
 
 module.exports = { obtenerPregunta, registrarRespuesta };
